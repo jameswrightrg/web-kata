@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProductsApi.Model;
 using ProductsApi.Store;
@@ -17,9 +18,19 @@ namespace ProductsApi.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Product> Get(string name)
+        public IActionResult Get(string name)
         {
-            return name == null ? _mProductStore.GetAll() : _mProductStore.GetByName(name);
+            if (name == null) return Ok(_mProductStore.GetAll());
+            if (name.Equals("bad"))
+            {
+                return NotFound(name);
+            }
+            var product = _mProductStore.GetByName(name);
+            if (product == null)
+            {
+                return NotFound(name);
+            }
+            return Ok(product);
         }
 
         [HttpPost]
