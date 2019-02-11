@@ -48,6 +48,22 @@ namespace ProductsApi.Controllers
             return Created("api/Products", value);
         }
 
+        [HttpDelete]
+        public IActionResult Delete(string name)
+        {
+            if (name.Equals(""))
+            {
+                return NotFound(name);
+            }
+            var product = _mProductStore.GetByName(name);
+            if (product == null)
+            {
+                return NotFound(name);
+            }
+            _mProductStore.Delete(product);
+            return Ok(name);
+        }
+
         [HttpPut]
         public IActionResult Put([FromBody] Product value)
         {
