@@ -47,5 +47,18 @@ namespace ProductsApi.Controllers
             _mProductStore.Add(value);
             return Created("api/Products", value);
         }
+
+        [HttpPut]
+        public IActionResult Put([FromBody] Product value)
+        {
+            var product = _mProductStore.GetByName(value.Name);
+            if (product == null)
+            {
+                return NotFound(value);
+            }
+            _mProductStore.Delete(product);
+            _mProductStore.Add(value);
+            return Ok(value);
+        }
     }
 }

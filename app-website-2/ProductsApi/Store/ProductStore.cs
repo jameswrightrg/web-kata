@@ -30,5 +30,10 @@ namespace ProductsApi.Store
         {
             _mProducts.Add(product);
         }
+
+        public void Delete(Product product)
+        {
+            _mProducts.Remove(product);
+        }
     }
 }
