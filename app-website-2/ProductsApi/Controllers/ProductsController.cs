@@ -23,9 +23,18 @@ namespace ProductsApi.Controllers
         }
 
         [HttpPost]
-        public void Post([FromBody] Product value)
+        public IActionResult Post([FromBody] Product value)
         {
+            if (_mProductStore.GetByName(value.Name) != null)
+            {
+                return StatusCode(StatusCodes.Status409Conflict, value);
+            }
+            if (value.Name.Equals(""))
+            {
+                return NotFound(value);
+            }
             _mProductStore.Add(value);
+            return Created("api/Products", value);
         }
     }
 }
